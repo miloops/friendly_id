@@ -5,14 +5,7 @@ class Slug < ::ActiveRecord::Base
   table_name = "slugs"
   before_save :enable_name_reversion, :set_sequence
   validate :validate_name
-  scope :similar_to, lambda {|slug| {:conditions => {
-        :name           => slug.name,
-        :scope          => slug.scope,
-        :sluggable_type => slug.sluggable_type
-      },
-      :order => "sequence ASC"
-    }
-  }
+  scope :similar_to, lambda { |slug| where(name: slug.name, scope: slug.scope, sluggable_type: slug.sluggable_type).order("sequence ASC") }
 
   def sluggable
     sluggable_id && !@sluggable and begin
@@ -57,7 +50,7 @@ class Slug < ::ActiveRecord::Base
   # If we're renaming back to a previously used friendly_id, delete the
   # slug so that we can recycle the name without having to use a sequence.
   def enable_name_reversion
-    sluggable.slugs.find_all_by_name_and_scope(name, scope).each { |slug| slug.destroy }
+    sluggable.slugs.where(name: name, scope: scope).each { |slug| slug.destroy }
   end
 
   def friendly_id_with_sequence
