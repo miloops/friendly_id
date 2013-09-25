@@ -1,3 +1,4 @@
+require "protected_attributes"
 # A Slug is a unique, human-friendly identifier for an ActiveRecord.
 class Slug < ::ActiveRecord::Base
   attr_writer :sluggable
