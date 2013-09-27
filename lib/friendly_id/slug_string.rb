@@ -6,7 +6,7 @@ module FriendlyId
     # @param config [FriendlyId::Configuration]
     # @return String
     def normalize_for!(config)
-      normalize!(config.babosa_options)
+      normalize!(config.babosa_options).chomp('-')
     end
 
     # Validate that the slug string is not blank or reserved, and truncate
