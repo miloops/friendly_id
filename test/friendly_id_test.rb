@@ -45,6 +45,12 @@ module FriendlyId
         options = {:approximate_ascii => true, :ascii_approximation_options => :german}
         assert_equal "ueber", s.normalize_for!(Configuration.new(nil, :name, options))
       end
+
+      test "should not end with a sequence separator" do
+        s = SlugString.new("slug string")
+        options = {:max_length => 5}
+        assert_equal "slug", s.normalize_for!(Configuration.new(nil, :name, options))
+      end
     end
 
     class FriendlyIdTest < ::Test::Unit::TestCase
